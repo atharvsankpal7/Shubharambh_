@@ -3,10 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getContactData } from '@/lib/actions';
 import { ContactSection } from '@/components/terms-privacy/contact-section';
 
-export const metadata = {
-  title: 'Terms & Privacy Policy - SSCreation',
-  description: 'Read our terms of service, privacy policy, refund policy, and delivery information for SSCreation digital templates.',
-};
+
 
 export default async function TermsPrivacyPage() {
   const { contactSettings } = await getContactData();

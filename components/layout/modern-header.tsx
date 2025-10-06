@@ -6,6 +6,7 @@ import { Menu, X, Phone, ChevronDown, Star, Award, MessageCircle } from 'lucide-
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from '@/components/ui/button';
 import { SectionHierarchy } from '@/types/section';
+import Image from 'next/image';
 
 interface ModernHeaderProps {
   navigationSections: SectionHierarchy[];
@@ -35,15 +36,14 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
 
   return (
     <motion.header
-  className={`sticky top-0 z-50 transition-all duration-500 ${
-    isScrolled
-      ? 'bg-white backdrop-blur-xl shadow-lg border-b border-purple-100/30'
-      : 'bg-white backdrop-blur-md'
-  }`}
-  initial={{ y: -100 }}
-  animate={{ y: 0 }}
-  transition={{ duration: 0.6, ease: "easeOut" }}
->
+      className={`sticky top-0 z-50 transition-all duration-500 ${isScrolled
+        ? 'bg-white backdrop-blur-xl shadow-lg border-b border-purple-100/30'
+        : 'bg-white backdrop-blur-md'
+        }`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
       {/* Top Bar */}
       <div className="bg-gradient-to-r from-purple-700 via-pink-600 to-orange-500 text-white py-2.5">
         <div className="container mx-auto px-4">
@@ -63,8 +63,8 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <a 
-                href={`tel:${headerData.phone.replace(/\s/g, '')}`} 
+              <a
+                href={`tel:${headerData.phone.replace(/\s/g, '')}`}
                 className="flex items-center space-x-2 hover:text-yellow-200 transition-colors group/phone"
               >
                 <div className="p-1.5 bg-white/20 rounded-full group-hover/phone:bg-white/30 transition-colors">
@@ -72,8 +72,8 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
                 </div>
                 <span className="font-medium">{headerData.phone}</span>
               </a>
-              <a 
-                href={`https://wa.me/${headerData.whatsappNumber.replace(/\s/g, '')}`} 
+              <a
+                href={`https://wa.me/${headerData.whatsappNumber.replace(/\s/g, '')}`}
                 className="hidden sm:flex items-center space-x-2 hover:text-green-200 transition-colors group/whatsapp"
                 target="_blank"
               >
@@ -92,53 +92,47 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="group flex items-center space-x-3">
-            <div className="relative">
-              <motion.div 
-                className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center shadow-lg group-hover:shadow-purple-300/40 transition-all duration-300 overflow-hidden"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                <span className="text-white font-bold text-xl">SS</span>
-                <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent"></div>
-              </motion.div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-400 rounded-full flex items-center justify-center shadow-sm">
-                <Star className="h-2 w-2 text-white" />
-              </div>
-            </div>
+
+
+            <Image src={"/logo.jpg"} className="w-12" alt="Shubharambh events logo" width={100} height={100} />
+
+
+
+
             <div>
               <span className="text-2xl font-black bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-transparent">
-                SS Creation
+                Shubharambh events
               </span>
-              <div className="text-xs text-gray-500 font-medium mt-0.5">Premium Design Studio</div>
+              <div className="text-xs text-gray-500 font-medium mt-0.5">Premium Event Managment</div>
             </div>
           </Link>
-          
+
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center justify-center space-x-8 flex-1">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="relative text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold group py-2"
             >
               Home
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
-            
-            <Link 
-              href="/about" 
+
+            <Link
+              href="/about"
               className="relative text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold group py-2"
             >
               About
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
 
-            <Link 
-              href="/products" 
+            <Link
+              href="/products"
               className="relative text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold group py-2"
             >
               Gallery
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
-            
+
             <div className="relative group">
               <Link
                 href="/products"
@@ -148,7 +142,7 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
                 <ChevronDown className="h-4 w-4 text-gray-400 group-hover/nav-item:text-purple-600 transition-all duration-300 group-hover:rotate-180" />
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover/nav-item:w-full transition-all duration-300"></span>
               </Link>
-              
+
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-3 w-96 bg-white/70 shadow-2xl border border-purple-100/30 rounded-2xl py-6 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out scale-95 group-hover:scale-100">
                 <div className="px-4">
                   <div className="grid grid-cols-2 gap-6">
@@ -190,16 +184,16 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
                 </div>
               </div>
             </div>
-            
-            <Link 
-              href="/contact" 
+
+            <Link
+              href="/contact"
               className="relative text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold group py-2"
             >
               Contact Us
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
           </nav>
-          
+
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
@@ -214,7 +208,7 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
         {/* Mobile Menu */}
         <AnimatePresence>
           {isMenuOpen && (
-            <motion.div 
+            <motion.div
               className="lg:hidden py-6 border-t border-purple-100/50"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
@@ -222,36 +216,36 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
               transition={{ duration: 0.3 }}
             >
               <div className="space-y-2 px-2">
-                <Link 
-                  href="/" 
+                <Link
+                  href="/"
                   className="block text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold py-3 px-4 rounded-xl hover:bg-purple-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Home
                 </Link>
-                <Link 
-                  href="/about" 
+                <Link
+                  href="/about"
                   className="block text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold py-3 px-4 rounded-xl hover:bg-purple-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   About
                 </Link>
-                <Link 
-                  href="/products" 
+                <Link
+                  href="/products"
                   className="block text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold py-3 px-4 rounded-xl hover:bg-purple-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Services
                 </Link>
-                <Link 
-                  href="/bundles" 
+                <Link
+                  href="/bundles"
                   className="block text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold py-3 px-4 rounded-xl hover:bg-purple-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Gallery
                 </Link>
-                <Link 
-                  href="/contact" 
+                <Link
+                  href="/contact"
                   className="block text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold py-3 px-4 rounded-xl hover:bg-purple-50"
                   onClick={() => setIsMenuOpen(false)}
                 >

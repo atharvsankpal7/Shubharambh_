@@ -3,6 +3,7 @@ import { ServicesShowcase } from '@/components/home/services-showcase';
 import { TestimonialsSection } from '@/components/home/testimonials-section';
 import { ProductSlider } from '@/components/home/product-slider';
 import { Metadata } from 'next';
+import { seed } from '@/scripts/seed';
 // export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  await seed();
   return (
     <div className="min-h-screen">
 
