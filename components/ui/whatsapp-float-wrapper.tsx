@@ -6,7 +6,7 @@ export async function WhatsAppFloatWrapper() {
   
   return (
     <WhatsAppFloat 
-      phoneNumber={headerData.whatsappNumber}
+      phoneNumber={"+91 81809 39260".replace(/\s+/g, '')}
       message="Hello! I'm interested in your products and would like to know more."
     />
   );

@@ -132,9 +132,9 @@ export function Footer() {
             </h4>
             <div className="space-y-4">
               {[
-                { icon: Phone, text: "+91-9876543210", href: "tel:+91-9876543210", color: "text-emerald-600" },
-                { icon: Mail, text: "info@sscreation.com", href: "mailto:info@sscreation.com", color: "text-blue-600" },
-                { icon: MapPin, text: "Mumbai, Maharashtra", href: "#", color: "text-rose-600" }
+                { icon: Phone, text: "+91-8180939260", href: "tel:+91-8180939260", color: "text-emerald-600" },
+                { icon: Mail, text: "shubharambhevents000@gmail.com", href: "mailto:shubharambhevents000@gmail.com", color: "text-blue-600" },
+                { icon: MapPin, text: "Gandhi Chowk, Sangli, Uran Islampur, Maharashtra 415409", href: "#", color: "text-rose-600" }
               ].map((contact, index) => (
                 <Link
                   key={index}

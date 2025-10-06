@@ -24,7 +24,7 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -36,54 +36,41 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
 
   return (
     <motion.header
-      className={`sticky top-0 z-50 transition-all duration-500 ${isScrolled
-        ? 'bg-white backdrop-blur-xl shadow-lg border-b border-purple-100/30'
-        : 'bg-white backdrop-blur-md'
-        }`}
+      className={`sticky top-0 z-50 transition-all duration-500 ${
+        isScrolled
+          ? 'bg-white/95 backdrop-blur-xl shadow-lg border-b border-purple-100/50'
+          : 'bg-white/90 backdrop-blur-lg border-b border-purple-50'
+      }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       {/* Top Bar */}
-      <div className="bg-gradient-to-r from-purple-700 via-pink-600 to-orange-500 text-white py-2.5">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <div className="p-1 bg-white/20 rounded-full">
-                  <Star className="h-3.5 w-3.5" />
-                </div>
-                <span className="font-medium">Premium Design Templates</span>
-              </div>
-              <div className="hidden md:flex items-center space-x-2">
-                <div className="p-1 bg-white/20 rounded-full">
-                  <Award className="h-3.5 w-3.5" />
-                </div>
-                <span>Trusted by 50,000+ Customers</span>
-              </div>
+      <div className="bg-gradient-to-r from-purple-600 to-pink-600 py-2 px-4">
+        <div className="container mx-auto flex items-center justify-between text-white text-sm">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-1">
+              <Phone className="h-3 w-3" />
+              <span className="font-medium">{"+91 81809 39260"}</span>
             </div>
-            <div className="flex items-center space-x-4">
-              <a
-                href={`tel:${headerData.phone.replace(/\s/g, '')}`}
-                className="flex items-center space-x-2 hover:text-yellow-200 transition-colors group/phone"
-              >
-                <div className="p-1.5 bg-white/20 rounded-full group-hover/phone:bg-white/30 transition-colors">
-                  <Phone className="h-3.5 w-3.5" />
-                </div>
-                <span className="font-medium">{headerData.phone}</span>
-              </a>
-              <a
-                href={`https://wa.me/${headerData.whatsappNumber.replace(/\s/g, '')}`}
-                className="hidden sm:flex items-center space-x-2 hover:text-green-200 transition-colors group/whatsapp"
-                target="_blank"
-              >
-                <div className="p-1.5 bg-white/20 rounded-full group-hover/whatsapp:bg-white/30 transition-colors">
-                  <MessageCircle className="h-3.5 w-3.5" />
-                </div>
-                <span className="font-medium">WhatsApp</span>
-              </a>
+            <div className="w-px h-4 bg-white/30"></div>
+            <div className="flex items-center space-x-1">
+              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+              <span className="font-medium">Premium Event Management</span>
             </div>
           </div>
+          
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="text-white hover:bg-white/20 rounded-full px-3 py-1 h-auto text-xs"
+          >
+            <Link href={`https://wa.me/${"+91 81809 39260".replace(/\s+/g, '')}`} target="_blank">
+              <MessageCircle className="h-3 w-3 mr-1" />
+              WhatsApp Us
+            </Link>
+          </Button>
         </div>
       </div>
 
@@ -91,117 +78,86 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="group flex items-center space-x-3">
-
-
-            <Image src={"/logo.jpg"} className="w-12" alt="Shubharambh events logo" width={100} height={100} />
-
-
-
-
-            <div>
-              <span className="text-2xl font-black bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-transparent">
-                Shubharambh events
+          <Link 
+            href="/" 
+            className="group flex items-center space-x-3 transition-transform hover:scale-105 duration-300"
+          >
+            <div className="relative">
+              <Image 
+                src="/logo.jpg" 
+                className="w-12 h-12 rounded-xl shadow-lg" 
+                alt="Shubharambh events logo" 
+                width={48} 
+                height={48}
+              />
+              <div className="absolute -inset-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl blur opacity-20 group-hover:opacity-30 transition-opacity"></div>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-2xl font-black bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-transparent leading-tight">
+                Shubharambh
               </span>
-              <div className="text-xs text-gray-500 font-medium mt-0.5">Premium Event Managment</div>
+              <span className="text-lg font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight -mt-1">
+                Events
+              </span>
+              <div className="text-xs text-gray-500 font-medium mt-0.5 tracking-wide">
+                Creating Unforgettable Moments
+              </div>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center justify-center space-x-8 flex-1">
-            <Link
-              href="/"
-              className="relative text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold group py-2"
-            >
-              Home
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-full transition-all duration-300"></span>
-            </Link>
-
-            <Link
-              href="/about"
-              className="relative text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold group py-2"
-            >
-              About
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-full transition-all duration-300"></span>
-            </Link>
-
-            <Link
-              href="/products"
-              className="relative text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold group py-2"
-            >
-              Gallery
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-full transition-all duration-300"></span>
-            </Link>
-
-            <div className="relative group">
+          <nav className="hidden lg:flex items-center space-x-1">
+            {[
+              { href: "/", label: "Home" },
+              { href: "/about", label: "About" },
+              { href: "/products", label: "Gallery" },
+              { href: "/contact", label: "Contact" }
+            ].map((item) => (
               <Link
-                href="/products"
-                className="flex items-center space-x-1 text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold py-2 group/nav-item"
+                key={item.href}
+                href={item.href}
+                className="relative px-6 py-2 text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold group"
               >
-                <span>Services</span>
-                <ChevronDown className="h-4 w-4 text-gray-400 group-hover/nav-item:text-purple-600 transition-all duration-300 group-hover:rotate-180" />
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover/nav-item:w-full transition-all duration-300"></span>
+                {item.label}
+                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300 transform -translate-x-1/2"></span>
+                <span className="absolute inset-0 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></span>
               </Link>
-
-              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-3 w-96 bg-white/70 shadow-2xl border border-purple-100/30 rounded-2xl py-6 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out scale-95 group-hover:scale-100">
-                <div className="px-4">
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
-                        <div className="w-2 h-2 rounded-full bg-purple-500 mr-2"></div>
-                        Design Templates
-                      </h4>
-                      <div className="space-y-2.5">
-                        <Link href="/products?section=Festival Designs" className="block text-sm text-gray-600 hover:text-purple-600 transition-colors py-1.5 pl-4 rounded-lg hover:bg-purple-50">
-                          Festival Designs
-                        </Link>
-                        <Link href="/products?section=Business Templates" className="block text-sm text-gray-600 hover:text-purple-600 transition-colors py-1.5 pl-4 rounded-lg hover:bg-purple-50">
-                          Business Cards
-                        </Link>
-                        <Link href="/products?section=Social Media" className="block text-sm text-gray-600 hover:text-purple-600 transition-colors py-1.5 pl-4 rounded-lg hover:bg-purple-50">
-                          Social Media
-                        </Link>
-                      </div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
-                        <div className="w-2 h-2 rounded-full bg-pink-500 mr-2"></div>
-                        Collections
-                      </h4>
-                      <div className="space-y-2.5">
-                        <Link href="/bundles" className="block text-sm text-gray-600 hover:text-purple-600 transition-colors py-1.5 pl-4 rounded-lg hover:bg-purple-50">
-                          Premium Bundles
-                        </Link>
-                        <Link href="/products?sort=featured" className="block text-sm text-gray-600 hover:text-purple-600 transition-colors py-1.5 pl-4 rounded-lg hover:bg-purple-50">
-                          Featured Designs
-                        </Link>
-                        <Link href="/products?sort=newest" className="block text-sm text-gray-600 hover:text-purple-600 transition-colors py-1.5 pl-4 rounded-lg hover:bg-purple-50">
-                          Latest Releases
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <Link
-              href="/contact"
-              className="relative text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold group py-2"
+            ))}
+            
+            <Button
+              asChild
+              className="ml-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-purple-400/40 transition-all duration-300 transform hover:scale-105 px-6 py-2"
             >
-              Contact Us
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-full transition-all duration-300"></span>
-            </Link>
+              <Link href="/contact">
+                Get Quote
+              </Link>
+            </Button>
           </nav>
 
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden w-10 h-10 rounded-full hover:bg-purple-100 transition-colors"
+            className="lg:hidden w-12 h-12 rounded-xl hover:bg-purple-100 transition-all duration-300 relative group"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <div className="relative w-6 h-6">
+              <motion.div
+                animate={isMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="absolute w-6 h-0.5 bg-gray-700 group-hover:bg-purple-600"
+              />
+              <motion.div
+                animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="absolute top-2 w-6 h-0.5 bg-gray-700 group-hover:bg-purple-600"
+              />
+              <motion.div
+                animate={isMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="absolute top-4 w-6 h-0.5 bg-gray-700 group-hover:bg-purple-600"
+              />
+            </div>
           </Button>
         </div>
 
@@ -209,57 +165,51 @@ export function ModernHeader({ navigationSections, headerData }: ModernHeaderPro
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
-              className="lg:hidden py-6 border-t border-purple-100/50"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
+              className="lg:hidden absolute left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-purple-100/50 shadow-2xl"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              <div className="space-y-2 px-2">
-                <Link
-                  href="/"
-                  className="block text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold py-3 px-4 rounded-xl hover:bg-purple-50"
-                  onClick={() => setIsMenuOpen(false)}
+              <div className="container mx-auto px-4 py-6 space-y-2">
+                {[
+                  { href: "/", label: "Home" },
+                  { href: "/about", label: "About" },
+                  { href: "/products", label: "Gallery" },
+                  { href: "/contact", label: "Contact Us" }
+                ].map((item, index) => (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <Link
+                      href={item.href}
+                      className="flex items-center text-gray-700 hover:text-purple-600 transition-all duration-300 font-semibold py-4 px-6 rounded-xl hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 group border border-transparent hover:border-purple-100"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <div className="w-1 h-6 bg-gradient-to-b from-purple-600 to-pink-600 rounded-full mr-4 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+                
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="pt-4 border-t border-gray-200/50 mt-4"
                 >
-                  Home
-                </Link>
-                <Link
-                  href="/about"
-                  className="block text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold py-3 px-4 rounded-xl hover:bg-purple-50"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/products"
-                  className="block text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold py-3 px-4 rounded-xl hover:bg-purple-50"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Services
-                </Link>
-                <Link
-                  href="/bundles"
-                  className="block text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold py-3 px-4 rounded-xl hover:bg-purple-50"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Gallery
-                </Link>
-                <Link
-                  href="/contact"
-                  className="block text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold py-3 px-4 rounded-xl hover:bg-purple-50"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Contact Us
-                </Link>
-
-                <div className="pt-4 border-t border-gray-200/50 mt-4">
                   <Button
                     asChild
-                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-purple-400/30 transition-all duration-300 py-3"
+                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-purple-400/40 transition-all duration-300 py-4 text-base transform hover:scale-105"
                   >
-                    <Link href="/contact" onClick={() => setIsMenuOpen(false)}>Get Quote</Link>
+                    <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
+                      Get Free Quote
+                    </Link>
                   </Button>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           )}

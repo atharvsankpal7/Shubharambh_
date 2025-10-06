@@ -1,104 +1,176 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import InfiniteScroll from "react-infinite-scroll-component"
 import Image from "next/image"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Link from "next/link"
+import { cn } from "@/lib/utils"
+import { Card } from "@/components/ui/card"
 
 interface Product {
   id: string
   displayImage: string
   title: string
+  sections: {
+    id: string
+    name: string
+    slug: string
+  }[]
+}
+
+interface Section {
+  id: string
+  name: string
+  slug: string
 }
 
 const ProductsPage = () => {
-  const [products, setProducts] = useState<Product[]>([])
-  const [page, setPage] = useState(1)
-  const [hasMore, setHasMore] = useState(true)
+  const [allProducts, setAllProducts] = useState<Product[]>([])
+  const [sections, setSections] = useState<Section[]>([])
+  const [selectedSection, setSelectedSection] = useState<string>("")
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchProducts = async (currentPage: number, append = false) => {
-    try {
-      setError(null)
-      const res = await fetch(`/api/products?page=${currentPage}&limit=12`)
-      if (!res.ok) throw new Error("Failed to fetch")
-      const data = await res.json()
-
-      if (append) {
-        setProducts((prev) => [...prev, ...data.products])
-      } else {
-        setProducts(data.products)
-      }
-
-      setHasMore(currentPage < data.totalPages)
-      setPage(currentPage)
-    } catch (err) {
-      console.error(err)
-      setError("Failed to fetch products. Please try again later.")
-    }
-  }
-
+  // Fetch all data on mount
   useEffect(() => {
-    fetchProducts(1)
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+
+        // Fetch sections
+        const sectionsRes = await fetch("/api/sections?type=flat&activeOnly=true")
+        if (!sectionsRes.ok) throw new Error("Failed to fetch sections")
+        const sectionsData = await sectionsRes.json()
+
+        // Filter only top-level sections (level 0)
+        const topLevelSections = sectionsData.filter((section: any) => section.level === 0)
+        setSections(topLevelSections)
+
+        // Fetch all products (no section filter)
+        const productsRes = await fetch("/api/products?limit=1000")
+        if (!productsRes.ok) throw new Error("Failed to fetch products")
+        const productsData = await productsRes.json()
+        setAllProducts(productsData.products)
+
+        // Set default selected section to the first one
+        if (topLevelSections.length > 0) {
+          setSelectedSection(topLevelSections[0].id)
+        }
+      } catch (err) {
+        console.error(err)
+        setError("Failed to fetch data. Please try again later.")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
   }, [])
 
+  // Filter products by selected section (client-side)
+  const getFilteredProducts = (sectionId: string) => {
+    return allProducts.filter((product) => product.sections?.some((section) => section.id === sectionId))
+  }
+
+  // Handle tab change
+  const handleTabChange = (sectionId: string) => {
+    setSelectedSection(sectionId)
+  }
+
   const renderSkeleton = () => (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-      {[...Array(6)].map((_, i) => (
-        <Skeleton key={i} className="h-48 w-full rounded-lg" />
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <Card key={i} className="overflow-hidden">
+          <Skeleton className="aspect-[4/3] w-full" />
+        </Card>
       ))}
     </div>
   )
 
+  // Dedicated, accessible ProductCard for consistent styling
+  function ProductCard({ product }: { product: Product }) {
+    return (
+      <Link href={`/products/${product.id}`} className="group focus:outline-none">
+        <Card className="overflow-hidden transition-shadow group-hover:shadow-sm">
+          <div className="relative">
+            <Image
+              src={product.displayImage || "/placeholder.svg"}
+              alt={product.title}
+              width={600}
+              height={450}
+              className="aspect-[4/3] w-full h-auto object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-black/40 p-2 opacity-0 transition-opacity group-hover:opacity-100">
+              <p className="truncate text-sm text-white">{product.title}</p>
+            </div>
+          </div>
+        </Card>
+        <span className="sr-only">{`View ${product.title}`}</span>
+      </Link>
+    )
+  }
+
+  // Improve skeleton to card-shaped placeholders with consistent aspect ratio
+  // Fix dynamic Tailwind class and switch to ProductCard for better visuals
   const renderProducts = (products: Product[], columns = 3) => {
-    const colGroups = Array.from({ length: columns }, () => [] as Product[])
-    products.forEach((product, i) => {
-      colGroups[i % columns].push(product)
-    })
+    if (products.length === 0) {
+      return <div className="py-12 text-center text-muted-foreground">No products found in this category.</div>
+    }
+
+    // Ensure Tailwind receives static classes
+    const gridColsClass =
+      columns === 2
+        ? "sm:grid-cols-2 lg:grid-cols-2"
+        : columns === 4
+          ? "sm:grid-cols-3 lg:grid-cols-4"
+          : "sm:grid-cols-3 lg:grid-cols-3"
 
     return (
-      <div className={`grid grid-cols-2 md:grid-cols-${columns} gap-4`}>
-        {colGroups.map((col, colIndex) => (
-          <div key={colIndex} className="grid gap-4">
-            {col.map((product) => (
-              <Image
-                key={product.id}
-                src={product.displayImage}
-                alt={product.title}
-                width={300}
-                height={200}
-                className="h-auto max-w-full rounded-lg"
-              />
-            ))}
-          </div>
+      <div className={cn("grid grid-cols-2 gap-4", gridColsClass)}>
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-          Our Collection
-        </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+    <div className="min-h-screen bg-background">
+      <div className="text-center mb-8 px-4">
+        <h1 className="text-balance text-3xl lg:text-5xl font-bold text-foreground mb-3">Our Collection</h1>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Discover our curated selection of premium graphic design templates
         </p>
-        <div className="w-32 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-6 rounded-full"/>
       </div>
-      <div className="flex justify-center w-full">
-        <InfiniteScroll
-          next={() => fetchProducts(page + 1, true)}
-          hasMore={hasMore}
-          loader={renderSkeleton()}
-          dataLength={products.length}
-          className="p-4 lg:px-32 max-w-7xl"
-        >
-          {renderProducts(products)}
-        </InfiniteScroll>
+
+      <div className="max-w-7xl mx-auto px-4 lg:px-8">
+        {error ? (
+          <div className="text-center text-destructive py-8">{error}</div>
+        ) : loading ? (
+          renderSkeleton()
+        ) : (
+          <Tabs value={selectedSection} onValueChange={handleTabChange} className="w-full">
+            <TabsList className="mx-auto mb-8 flex max-w-full flex-wrap justify-center gap-2">
+              {sections.map((section) => (
+                <TabsTrigger
+                  key={section.id}
+                  value={section.id}
+                  className="px-3 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                >
+                  {section.name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            {sections.map((section) => (
+              <TabsContent key={section.id} value={section.id} className="mt-0">
+                {renderProducts(getFilteredProducts(section.id))}
+              </TabsContent>
+            ))}
+          </Tabs>
+        )}
       </div>
-      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
     </div>
   )
 }

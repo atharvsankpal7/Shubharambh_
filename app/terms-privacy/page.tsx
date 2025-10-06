@@ -111,7 +111,7 @@ export default async function TermsPrivacyPage() {
                 </div>
                 <div className="flex items-start">
                   <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <p>We'll re-send the access link in case of errors, but no refunds will be processed for downloadable items.</p>
+                  <p>Well re-send the access link in case of errors, but no refunds will be processed for downloadable items.</p>
                 </div>
               </div>
             </CardContent>

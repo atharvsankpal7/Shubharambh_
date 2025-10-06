@@ -149,7 +149,7 @@ export function ModernFooter() {
               </div>
               <div>
                 <p className="text-gray-300 text-sm">Email Us</p>
-                <p className="text-white font-semibold">info@shubharambh.com</p>
+                <p className="text-white font-semibold">shubharambhevents000@gmail.com</p>
               </div>
             </div>
 
@@ -159,7 +159,7 @@ export function ModernFooter() {
               </div>
               <div>
                 <p className="text-gray-300 text-sm">Location</p>
-                <p className="text-white font-semibold">Sangli, Maharashtra</p>
+                <p className="text-white font-semibold">Gandhi Chowk, Uran Islampur</p>
               </div>
             </div>
           </div>
